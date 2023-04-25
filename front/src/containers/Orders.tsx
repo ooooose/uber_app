@@ -3,7 +3,7 @@ import React from 'react';
 const Orders: React.FC = () => {
     return (
         <>
-            <h1>Hello Orders!!</h1>
+            <h1>注文画面!</h1>
         </>
     )
 }
