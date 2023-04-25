@@ -34,6 +34,22 @@ class Api::V1::LineFoodsController < ApplicationController
     end
   end
 
+  def replace
+    LineFood.active.other_restaurant(@ordered_food.restaurant.id).each do |line_food|
+      line_food.update(:active, false)
+    end
+
+    set_line_food(@ordered_food)
+
+    if @line_food.save
+      render json: {
+        line_food: @line_food,
+      }, status: :created
+    else
+      render json: {}, status: :internal_server_error
+    end
+  end
+
   private
 
   def set_food
@@ -51,7 +67,7 @@ class Api::V1::LineFoodsController < ApplicationController
       @line_food = ordered_food.build_line_food(
         count: params[:count],
         restaurant: ordered_food.restaurant,
-        active: true
+        active: true,
       )
     end
   end
